@@ -26,23 +26,36 @@ class MyCSVLogger():
     def open(self,mode='a'):
         # opens the file for appending; any data written to the file is automatically added to the end
         # 'w' is for only writing (an existing file with the same name will be erased)
-        self.file = open(self.fname, mode)
+        try:
+            self.file = open(self.fname, mode)
+        except Exception, err:
+            self.file = None
+            print "Error opening CSV file: "+self.fname+" in "+mode+"."
+            print err
 
     def save(self, entry): # entry should be a list
-        for e in range(len(entry)):
-            self.file.write(str(entry[e]))
-            if(e == len(entry)-1):
-                self.file.write('\n')
-            else:
-                self.file.write(',')
+        try:
+            for eIdx, e in enumerate(entry):
+                self.file.write(str(e))
+                if(eIdx == len(entry)-1):
+                    self.file.write('\n')
+                else:
+                    self.file.write(',')
+        except Exception, err:
+            print "Error saving data in file: "+self.fname
+            print err
 
     def close(self):
-        self.file.close()
+        try:
+            self.file.close()
+        except Exception, err: 
+            print "Error closing file: "+self.fname
+            print err
 
     def header(self, labels): # this function is actually redundant but the name makes the purpose easy to understand
         # In the future, even if the file has a lot of data in it, this function should just change / replace the first line.
-        self.save(labels)
-
-    def read(self, entryNum):
-        # This method is supposed to return the entry_numth entry in the file, to be implemented later.
-        pass
+        try:
+            self.save(labels)
+        except Exception, err: 
+            print "Error adding data header."
+            print err
