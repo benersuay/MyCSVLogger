@@ -51,6 +51,9 @@ class MyCSVLogger():
         except Exception, err: 
             print "Error closing file: "+self.fname
             print err
+            return False
+
+        return True
 
     def header(self, labels): # this function is actually redundant but the name makes the purpose easy to understand
         # In the future, even if the file has a lot of data in it, this function should just change / replace the first line.
